@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)file:///Users/jerome/Downloads/index.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPI Gabriel — UPLIFT Coaching</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
+.app{max-width:720px;margin:0 auto;padding:1.5rem 1rem 4rem}
+h1{font-size:20px;font-weight:600;color:#1a1a1a}
+.subtitle{font-size:13px;color:#888;margin-top:3px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;gap:12px;flex-wrap:wrap}
+.week-input{font-size:13px;border:1px solid #ddd;border-radius:8px;padding:7px 12px;background:#fff;color:#1a1a1a;width:170px}
+.score-banner{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.score-card{background:#fff;border-radius:10px;padding:12px;text-align:center;border:1px solid #eee}
+.score-card .label{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.score-card .val{font-size:24px;font-weight:600;color:#1a1a1a}
+.score-card .sub{font-size:11px;color:#bbb;margin-top:1px}
+.tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{padding:6px 14px;font-size:13px;border:1px solid #ddd;border-radius:20px;cursor:pointer;background:#fff;color:#888;transition:all .15s}
+.tab.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.section{display:none}
+.section.visible{display:block}
+.section-title{font-size:14px;font-weight:600;margin-bottom:14px}
+.badge{display:inline-block;font-size:11px;padding:4px 12px;border-radius:12px;font-weight:500}
+.badge-energy{background:#e1f5ee;color:#085041}
+.badge-lead{background:#e6f1fb;color:#0c447c}
+.badge-trans{background:#faeeda;color:#633806}
+.badge-lulu{background:#eeedfe;color:#3c3489}
+.badge-pos{background:#faece7;color:#712b13}
+.badge-del{background:#eaf3de;color:#27500a}
+.badge-food{background:#fbeaf0;color:#72243e}
+.kpi-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:1.5rem;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #eee}
+.kpi-table th{font-size:11px;font-weight:500;color:#999;text-align:left;padding:8px 10px;border-bottom:1px solid #f0f0f0;background:#fafafa}
+.kpi-table td{padding:9px 10px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.kpi-table tr:last-child td{border-bottom:none}
+.kpi-name{font-size:13px;color:#1a1a1a;line-height:1.4}
+.kpi-sub{font-size:11px;color:#aaa;margin-top:2px}
+.cible{font-size:12px;color:#aaa;white-space:nowrap}
+.kpi-input{width:72px;border:1px solid #e0e0e0;border-radius:7px;padding:5px 8px;font-size:13px;background:#fafafa;color:#1a1a1a;text-align:center}
+.kpi-input:focus{outline:none;border-color:#999;background:#fff}
+.trend{font-size:16px;text-align:center;cursor:pointer;user-select:none;padding:4px 6px;border-radius:6px;transition:background .1s}
+.trend:hover{background:#f0f0f0}
+.note-input{width:100%;border:1px solid #e0e0e0;border-radius:6px;padding:5px 8px;font-size:12px;background:#fafafa;color:#1a1a1a}
+.note-input:focus{outline:none;border-color:#999}
+.radio-row{display:flex;gap:6px;flex-wrap:wrap}
+.radio-btn{padding:4px 10px;font-size:12px;border:1px solid #e0e0e0;border-radius:10px;cursor:pointer;background:#fafafa;color:#888;transition:all .15s}
+.radio-btn.sel{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+.synth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.synth-item{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px}
+.synth-item label{font-size:10px;color:#aaa;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.synth-item textarea{width:100%;border:none;background:transparent;font-size:13px;color:#1a1a1a;resize:none;outline:none;line-height:1.5;min-height:56px;font-family:inherit}
+.save-btn{width:100%;padding:13px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;margin-top:8px;transition:opacity .15s}
+.save-btn:hover{opacity:.85}
+.history-empty{text-align:center;padding:2.5rem;color:#aaa;font-size:13px;background:#fff;border-radius:10px;border:1px solid #eee}
+.hist-row{background:#fff;border:1px solid #eee;border-radius:10px;padding:13px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.hist-week{font-size:14px;font-weight:500;color:#1a1a1a}
+.hist-score{font-size:22px;font-weight:600;color:#1a1a1a}
+.chart-area{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px;margin-bottom:1.5rem}
+.chart-label{font-size:12px;color:#aaa;margin-bottom:12px}
+.bar-chart{display:flex;gap:6px;align-items:flex-end;height:80px;border-bottom:1px solid #f0f0f0;padding-bottom:4px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar{border-radius:3px 3px 0 0;width:100%;min-height:3px;transition:height .3s}
+.bar-val{font-size:10px;color:#aaa}
+.star{font-size:20px;cursor:pointer;opacity:.25;transition:opacity .15s;color:#BA7517}
+.star.lit{opacity:1}
+.separator{height:1px;background:#f0f0f0;margin:1.5rem 0}
+@media(max-width:480px){
+  .score-banner{grid-template-columns:repeat(2,1fr)}
+  .synth-grid{grid-template-columns:1fr}
+  .tabs .tab{font-size:12px;padding:5px 10px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div>
+    <h1>Suivi KPI — Gabriel Pontbriand</h1>
+    <div class="subtitle">UPLIFT Coaching Performance · Jérôme Pontbriand</div>
+  </div>
+  <input class="week-input" type="text" id="weekDate" placeholder="Semaine du...">
+</div>
+
+<div class="score-banner">
+  <div class="score-card"><div class="label">Score global</div><div class="val" id="scoreGlobal">—</div><div class="sub">/10</div></div>
+  <div class="score-card"><div class="label">Énergie</div><div class="val" id="scoreEnergie">—</div><div class="sub">/10</div></div>
+  <div class="score-card"><div class="label">Leadership</div><div class="val" id="scoreLead">—</div><div class="sub">/10</div></div>
+  <div class="score-card"><div class="label">Lulu Island</div><div class="val" id="scoreLulu">—</div><div class="sub">/10</div></div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(&#39;energie&#39;,this)">Énergie</div>
+  <div class="tab" onclick="showTab(&#39;alimentation&#39;,this)">Alimentation</div>
+  <div class="tab" onclick="showTab(&#39;leadership&#39;,this)">Leadership</div>
+  <div class="tab" onclick="showTab(&#39;transversalite&#39;,this)">Transversalité</div>
+  <div class="tab" onclick="showTab(&#39;lulu&#39;,this)">Lulu Island</div>
+  <div class="tab" onclick="showTab(&#39;positionnement&#39;,this)">Positionnement</div>
+  <div class="tab" onclick="showTab(&#39;delegation&#39;,this)">Délégation</div>
+  <div class="tab" onclick="showTab(&#39;synthese&#39;,this)">Synthèse</div>
+  <div class="tab" onclick="showTab(&#39;historique&#39;,this)">Historique</div>
+</div>
+
+<!-- ÉNERGIE -->
+<div class="section visible" id="tab-energie">
+  <div class="section-title"><span class="badge badge-energy">Énergie &amp; hygiène de vie</span></div>
+  <table class="kpi-table">
+    <tbody><tr><th style="width:38%">KPI</th><th>Cible</th><th>Résultat</th><th>Tend.</th><th>Note</th></tr>
+    <tr><td><div class="kpi-name">Score sommeil Garmin</div><div class="kpi-sub">Moyenne semaine</div></td><td class="cible">≥ 75</td><td><input class="kpi-input" id="e1" type="number" min="0" max="100" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Durée sommeil</div><div class="kpi-sub">Moyenne semaine</div></td><td class="cible">≥ 6h45</td><td><input class="kpi-input" id="e2" type="text" placeholder="6h30"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Body Battery matin</div><div class="kpi-sub">Moyenne semaine</div></td><td class="cible">≥ 70</td><td><input class="kpi-input" id="e3" type="number" min="0" max="100" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Niveau stress Garmin</div><div class="kpi-sub">Moyenne semaine</div></td><td class="cible">≤ 30</td><td><input class="kpi-input" id="e4" type="number" min="0" max="100" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Pas quotidiens</div><div class="kpi-sub">Moyenne semaine</div></td><td class="cible">≥ 10 000</td><td><input class="kpi-input" id="e5" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Entraînements / semaine</div></td><td class="cible">2–3x</td><td><input class="kpi-input" id="e6" type="number" min="0" max="7" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Consommation alcool</div></td><td class="cible">≤ 2 occ.</td><td><input class="kpi-input" id="e7" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Énergie ressenti</div></td><td class="cible">≥ 7</td><td><input class="kpi-input" id="e8" type="number" min="1" max="10" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+  </tbody></table>
+</div>
+
+<!-- ALIMENTATION -->
+<div class="section" id="tab-alimentation">
+  <div class="section-title"><span class="badge badge-food">Alimentation &amp; nutrition</span></div>
+  <table class="kpi-table">
+    <tbody><tr><th style="width:38%">KPI</th><th>Cible</th><th>Résultat</th><th>Tend.</th><th>Note</th></tr>
+    <tr><td><div class="kpi-name">Prep meal réalisé</div><div class="kpi-sub">Préparation weekend</div></td><td class="cible">Oui</td><td><div class="radio-row"><span class="radio-btn sel" onclick="toggleRadio(this,&#39;a1g&#39;)">Oui</span><span class="radio-btn" onclick="toggleRadio(this,&#39;a1g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Repas cuisinés maison</div><div class="kpi-sub">Fois / semaine</div></td><td class="cible">≥ 4x</td><td><input class="kpi-input" id="a2" type="number" min="0" max="21" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Hydratation</div><div class="kpi-sub">Litres / jour moyenne</div></td><td class="cible">≥ 2L</td><td><input class="kpi-input" id="a3" type="number" min="0" max="5" step="0.5" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Repas sans écran</div><div class="kpi-sub">Alimentation consciente</div></td><td class="cible">Souvent</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;a4g&#39;)">Souvent</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;a4g&#39;)">Parfois</span><span class="radio-btn" onclick="toggleRadio(this,&#39;a4g&#39;)">Rarement</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Sucre / fast-food</div><div class="kpi-sub">Occasions semaine</div></td><td class="cible">≤ 2x</td><td><input class="kpi-input" id="a5" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Qualité alimentation globale</div><div class="kpi-sub">Ressenti /10</div></td><td class="cible">≥ 7</td><td><input class="kpi-input" id="a6" type="number" min="1" max="10" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+  </tbody></table>
+  <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:1rem">
+    <label style="font-size:10px;color:#aaa;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">Contexte semaine (repas d'affaires, voyages, stress alimentaire...)</label>
+    <textarea style="width:100%;border:none;background:transparent;font-size:13px;color:#1a1a1a;resize:none;outline:none;line-height:1.5;min-height:50px;font-family:inherit" placeholder="Ex: Lundi soir repas clients, vendredi déplacement Sutton..."></textarea>
+  </div>
+</div>
+
+<!-- LEADERSHIP -->
+<div class="section" id="tab-leadership">
+  <div class="section-title"><span class="badge badge-lead">Leadership &amp; influence</span></div>
+  <table class="kpi-table">
+    <tbody><tr><th style="width:38%">KPI</th><th>Cible</th><th>Résultat</th><th>Tend.</th><th>Note</th></tr>
+    <tr><td><div class="kpi-name">Interventions pertinentes en meeting</div></td><td class="cible">≥ 3</td><td><input class="kpi-input" id="l1" type="number" min="0" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Prises de position assumées</div></td><td class="cible">≥ 2</td><td><input class="kpi-input" id="l2" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Mode question only</div><div class="kpi-sub">«Et quoi d'autre?» utilisé</div></td><td class="cible">≥ 3x</td><td><input class="kpi-input" id="l3" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Signal interne utilisé</div><div class="kpi-sub">HEY BEN — recalibration</div></td><td class="cible">≥ 1</td><td><input class="kpi-input" id="l4" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Qualité de présence</div></td><td class="cible">≥ 7</td><td><input class="kpi-input" id="l5" type="number" min="1" max="10" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+  </tbody></table>
+</div>
+
+<!-- TRANSVERSALITÉ -->
+<div class="section" id="tab-transversalite">
+  <div class="section-title"><span class="badge badge-trans">Transversalité &amp; impact</span></div>
+  <table class="kpi-table">
+    <tbody><tr><th style="width:38%">KPI</th><th>Cible</th><th>Résultat</th><th>Tend.</th><th>Note</th></tr>
+    <tr><td><div class="kpi-name">Connexions avec autres équipes</div></td><td class="cible">≥ 2</td><td><input class="kpi-input" id="t1" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Initiatives cross-pollination</div></td><td class="cible">≥ 1</td><td><input class="kpi-input" id="t2" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Rôle de rassembleur</div></td><td class="cible">≥ 1</td><td><input class="kpi-input" id="t3" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Contribution stratégique visible</div></td><td class="cible">Oui</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;t4g&#39;)">Oui</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;t4g&#39;)">Partiel</span><span class="radio-btn" onclick="toggleRadio(this,&#39;t4g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+  </tbody></table>
+</div>
+
+<!-- LULU ISLAND -->
+<div class="section" id="tab-lulu">
+  <div class="section-title"><span class="badge badge-lulu">Lulu Island — Projet majeur</span></div>
+  <table class="kpi-table">
+    <tbody><tr><th style="width:38%">KPI</th><th>Cible</th><th>Résultat</th><th>Tend.</th><th>Note</th></tr>
+    <tr><td><div class="kpi-name">Avancement du projet</div></td><td class="cible">Progression</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;lu1g&#39;)">Oui</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;lu1g&#39;)">Partiel</span><span class="radio-btn" onclick="toggleRadio(this,&#39;lu1g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Décisions clés prises</div></td><td class="cible">≥ 2</td><td><input class="kpi-input" id="lu2" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Leadership créatif démontré</div></td><td class="cible">≥ 1 moment</td><td><input class="kpi-input" id="lu3" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Rôle gardien — Guiding Principles</div></td><td class="cible">≥ 1</td><td><input class="kpi-input" id="lu4" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Référence GP / Rules en réunion</div></td><td class="cible">≥ 1</td><td><input class="kpi-input" id="lu5" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Engagement projet</div></td><td class="cible">≥ 8</td><td><input class="kpi-input" id="lu6" type="number" min="1" max="10" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+  </tbody></table>
+  <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:1rem">
+    <label style="font-size:10px;color:#aaa;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">Livrable de la semaine</label>
+    <input type="text" style="width:100%;border:1px solid #e0e0e0;border-radius:7px;padding:7px 10px;font-size:13px;background:#fafafa;color:#1a1a1a" placeholder="Ex: 3 concept arts vendredi...">
+  </div>
+</div>
+
+<!-- POSITIONNEMENT -->
+<div class="section" id="tab-positionnement">
+  <div class="section-title"><span class="badge badge-pos">Positionnement &amp; identité</span></div>
+  <table class="kpi-table">
+    <tbody><tr><th style="width:38%">KPI</th><th>Cible</th><th>Résultat</th><th>Tend.</th><th>Note</th></tr>
+    <tr><td><div class="kpi-name">Ai-je pris ma place?</div></td><td class="cible">Oui</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;p1g&#39;)">Oui</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;p1g&#39;)">Partiel</span><span class="radio-btn" onclick="toggleRadio(this,&#39;p1g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Ai-je été visible?</div></td><td class="cible">Oui</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;p2g&#39;)">Oui</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;p2g&#39;)">Partiel</span><span class="radio-btn" onclick="toggleRadio(this,&#39;p2g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Ai-je joué mon rôle de leader?</div></td><td class="cible">Oui</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;p3g&#39;)">Oui</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;p3g&#39;)">Partiel</span><span class="radio-btn" onclick="toggleRadio(this,&#39;p3g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Clarté de mon rôle</div></td><td class="cible">≥ 7</td><td><input class="kpi-input" id="po4" type="number" min="1" max="10" placeholder="—" oninput="calcScores()"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+  </tbody></table>
+</div>
+
+<!-- DÉLÉGATION -->
+<div class="section" id="tab-delegation">
+  <div class="section-title"><span class="badge badge-del">Délégation &amp; art des questions</span></div>
+  <table class="kpi-table">
+    <tbody><tr><th style="width:38%">KPI</th><th>Cible</th><th>Résultat</th><th>Tend.</th><th>Note</th></tr>
+    <tr><td><div class="kpi-name">Tâches déléguées</div></td><td class="cible">≥ 2</td><td><input class="kpi-input" id="d1" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Fait qqch que j'aurais pu déléguer?</div></td><td class="cible">Non</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;d2g&#39;)">Oui</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;d2g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Confort dans la délégation</div></td><td class="cible">≥ 7</td><td><input class="kpi-input" id="d3" type="number" min="1" max="10" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Questions ouvertes posées</div></td><td class="cible">≥ 3</td><td><input class="kpi-input" id="d4" type="number" min="0" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Ai-je plus écouté que parlé?</div></td><td class="cible">Oui</td><td><div class="radio-row"><span class="radio-btn" onclick="toggleRadio(this,&#39;d5g&#39;)">Oui</span><span class="radio-btn sel" onclick="toggleRadio(this,&#39;d5g&#39;)">Partiel</span><span class="radio-btn" onclick="toggleRadio(this,&#39;d5g&#39;)">Non</span></div></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+    <tr><td><div class="kpi-name">Qualité de mes questions</div></td><td class="cible">≥ 7</td><td><input class="kpi-input" id="d6" type="number" min="1" max="10" placeholder="—"></td><td class="trend" onclick="cycleTrend(this)">→</td><td><input class="note-input" placeholder="…"></td></tr>
+  </tbody></table>
+</div>
+
+<!-- SYNTHÈSE -->
+<div class="section" id="tab-synthese">
+  <div class="section-title"><span class="badge badge-lead">Synthèse de semaine</span></div>
+  <div class="synth-grid">
+    <div class="synth-item"><label>Victoire clé</label><textarea placeholder="Ex: J&#39;ai livré les 3 concepts Lulu Island…"></textarea></div>
+    <div class="synth-item"><label>Moment fort leadership</label><textarea placeholder="Un moment où j&#39;ai pris ma place…"></textarea></div>
+    <div class="synth-item"><label>Difficulté / friction</label><textarea placeholder="Ce qui m&#39;a drainé ou freiné…"></textarea></div>
+    <div class="synth-item"><label>Prise d'altitude</label><textarea placeholder="Balcon ou piste de danse?"></textarea></div>
+    <div class="synth-item"><label>Ajustement semaine prochaine</label><textarea placeholder="Ce que je fais différemment…"></textarea></div>
+    <div class="synth-item"><label>Intention prioritaire (1 chose)</label><textarea placeholder="Mon focus #1…"></textarea></div>
+  </div>
+  <div class="synth-item" style="margin-bottom:1rem">
+    <label>Message à moi-même</label>
+    <textarea style="width:100%;border:none;background:transparent;font-size:13px;color:#1a1a1a;resize:none;outline:none;line-height:1.5;min-height:56px;font-family:inherit" placeholder="Ce que je veux retenir de cette semaine…"></textarea>
+  </div>
+  <div style="margin-bottom:1.5rem">
+    <div style="font-size:12px;color:#aaa;margin-bottom:8px">Humeur générale de la semaine</div>
+    <div id="stars" style="display:flex;gap:6px">
+      <span class="star" onclick="setStar(1)">★</span>
+      <span class="star" onclick="setStar(2)">★</span>
+      <span class="star" onclick="setStar(3)">★</span>
+      <span class="star" onclick="setStar(4)">★</span>
+      <span class="star" onclick="setStar(5)">★</span>
+    </div>
+  </div>
+  <button class="save-btn" onclick="saveWeek()">Sauvegarder la semaine →</button>
+</div>
+
+<!-- HISTORIQUE -->
+<div class="section" id="tab-historique">
+  <div class="section-title"><span class="badge badge-lead">Historique &amp; tendances</span></div>
+  <div class="chart-area" id="chartArea" style="display:none">
+    <div class="chart-label">Énergie ressenti — dernières semaines</div>
+    <div class="bar-chart" id="barChart"></div>
+  </div>
+  <div id="histList"></div>
+</div>
+
+</div>
+
+<script>
+var currentTab='energie';
+var starVal=0;
+var history=[];
+try{var s=localStorage.getItem('kpi_gab');if(s)history=JSON.parse(s);}catch(e){}
+
+function showTab(t,el){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('visible')});
+  document.querySelectorAll('.tab').forEach(function(tb){tb.classList.remove('active')});
+  document.getElementById('tab-'+t).classList.add('visible');
+  if(el)el.classList.add('active');
+  currentTab=t;
+  if(t==='historique')renderHistory();
+}
+
+function cycleTrend(el){
+  var seq=['→','↑','↓'];
+  var i=seq.indexOf(el.textContent);
+  el.textContent=seq[(i+1)%3];
+  el.style.color=el.textContent==='↑'?'#1D9E75':el.textContent==='↓'?'#D85A30':'#aaa';
+}
+
+function toggleRadio(el,group){
+  el.closest('.radio-row').querySelectorAll('.radio-btn').forEach(function(b){b.classList.remove('sel')});
+  el.classList.add('sel');
+}
+
+function setStar(n){
+  starVal=n;
+  document.querySelectorAll('.star').forEach(function(s,i){s.classList.toggle('lit',i<n)});
+}
+
+function getVal(id){var el=document.getElementById(id);return el&&el.value?parseFloat(el.value):null;}
+
+function calcScores(){
+  var e8=getVal('e8'),l1=getVal('l1'),l5=getVal('l5'),lu6=getVal('lu6'),po4=getVal('po4');
+  var sE=e8||null;
+  var sL=(l5)?Math.round(l5*10)/10:null;
+  var sLu=lu6||null;
+  var parts=[];
+  if(sE)parts.push(sE);if(sL)parts.push(sL);if(sLu)parts.push(sLu);if(po4)parts.push(po4);
+  var g=parts.length?Math.round(parts.reduce(function(a,b){return a+b},0)/parts.length*10)/10:null;
+  document.getElementById('scoreGlobal').textContent=g||'—';
+  document.getElementById('scoreEnergie').textContent=sE||'—';
+  document.getElementById('scoreLead').textContent=sL||'—';
+  document.getElementById('scoreLulu').textContent=sLu||'—';
+}
+
+function saveWeek(){
+  var week=document.getElementById('weekDate').value||('Semaine du '+new Date().toLocaleDateString('fr-CA'));
+  history.unshift({week:week,date:Date.now(),energie:getVal('e8'),lulu:getVal('lu6'),stars:starVal});
+  try{localStorage.setItem('kpi_gab',JSON.stringify(history.slice(0,20)));}catch(e){}
+  showTab('historique',document.querySelectorAll('.tab')[8]);
+}
+
+function renderHistory(){
+  var list=document.getElementById('histList'),ca=document.getElementById('chartArea');
+  if(!history.length){list.innerHTML='<div class="history-empty">Aucune semaine sauvegardée encore.<br>Remplis le formulaire et clique «Sauvegarder».</div>';ca.style.display='none';return;}
+  ca.style.display='block';
+  var bc=document.getElementById('barChart');bc.innerHTML='';
+  history.slice(0,8).reverse().forEach(function(h){
+    var pct=h.energie?(h.energie/10*100):5;
+    var col=h.energie>=7?'#1D9E75':h.energie>=5?'#BA7517':'#D85A30';
+    bc.innerHTML+='<div class="bar-wrap"><div class="bar" style="height:'+pct+'%;background:'+col+'"></div><div class="bar-val">'+(h.energie||'—')+'</div></div>';
+  });
+  list.innerHTML='';
+  history.forEach(function(h){
+    var stars='';for(var i=0;i<5;i++)stars+='<span style="color:'+(i<h.stars?'#BA7517':'#e0e0e0')+'">★</span>';
+    list.innerHTML+='<div class="hist-row"><div><div class="hist-week">'+h.week+'</div><div style="font-size:13px;margin-top:4px">'+stars+'</div></div><div style="text-align:right"><div class="hist-score">'+(h.energie||'—')+'<span style="font-size:13px;color:#aaa">/10</span></div><div style="font-size:11px;color:#aaa;margin-top:2px">énergie</div></div></div>';
+  });
+}
+</script>
+
+
+</body></html>
